@@ -1,0 +1,33 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  @apply bg-black text-zinc-200 font-sans;
+}
+
+/* Scrollbar styling for a futuristic vibe */
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(34,211,238,0.6), rgba(59,130,246,0.4));
+  border-radius: 9999px;
+}
+*::-webkit-scrollbar-track {
+  background: rgba(255,255,255,0.06);
+}
+
+/* Smooth scroll */
+html {
+  scroll-behavior: smooth;
+}
