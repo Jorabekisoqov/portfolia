@@ -33,8 +33,12 @@ export function About() {
         >
           <div className="relative mx-auto aspect-square w-64 overflow-hidden rounded-2xl border border-cyan-400/20 bg-gradient-to-br from-cyan-500/20 via-transparent to-transparent p-1 shadow-[0_0_40px_rgba(0,255,255,0.15)] backdrop-blur md:w-80">
             <div className="relative h-full w-full overflow-hidden rounded-xl bg-black/60">
-              <div className="pointer-events-none absolute inset-0 animate-pulse bg-[radial-gradient(ellipse_at_top_left,rgba(34,211,238,0.25),transparent_40%),radial-gradient(ellipse_at_bottom_right,rgba(99,102,241,0.25),transparent_40%)]" />
-              <div className="absolute inset-0 grid place-content-center text-6xl text-cyan-300/80">🤖</div>
+              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,rgba(34,211,238,0.15),transparent_40%),radial-gradient(ellipse_at_bottom_right,rgba(99,102,241,0.15),transparent_40%)]" />
+              <img
+                src="/image.png"
+                alt="Profile"
+                className="absolute inset-0 h-full w-full object-cover"
+              />
             </div>
           </div>
         </motion.div>
