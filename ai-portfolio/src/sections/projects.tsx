@@ -1,47 +1,138 @@
 "use client";
 
-import { motion } from "framer-motion";
+import anime from "animejs";
 import { Github, ExternalLink } from "lucide-react";
+import { useEffect, useRef } from "react";
 
 const projects = [
   {
     title: "NeuroRAG",
     description: "Retrieval-augmented generation pipeline with hybrid search, reranking, and tool-use.",
     stack: ["Next.js", "TypeScript", "Python", "LangChain"],
-    github: "https://github.com/your/repo",
+    github: "https://github.com/isoqovjorabek2",
     demo: "https://example.com",
   },
   {
     title: "LLM Orchestrator",
     description: "Agentic workflow engine with memory, function-calling, and streaming UI.",
     stack: ["Next.js", "Node", "OpenAI", "Postgres"],
-    github: "https://github.com/your/repo",
+    github: "https://github.com/isoqovjorabek2",
     demo: "https://example.com",
   },
   {
     title: "ReinforceKit",
     description: "Reinforcement learning experiments toolkit with visualization and dashboards.",
     stack: ["Python", "PyTorch", "Weights & Biases"],
-    github: "https://github.com/your/repo",
+    github: "https://github.com/isoqovjorabek2",
     demo: "https://example.com",
   },
 ];
 
 export function Projects() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const cardsRef = useRef<HTMLDivElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const animatedRef = useRef(false);
+
+  useEffect(() => {
+    if (!sectionRef.current || animatedRef.current) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !animatedRef.current) {
+            animatedRef.current = true;
+
+            // Animate title
+            if (titleRef.current) {
+              anime({
+                targets: titleRef.current,
+                opacity: [0, 1],
+                translateY: [-30, 0],
+                duration: 800,
+                easing: "easeOutExpo",
+              });
+            }
+
+            // Stagger animation for cards
+            if (cardsRef.current) {
+              const cards = cardsRef.current.querySelectorAll(".project-card");
+              anime({
+                targets: cards,
+                opacity: [0, 1],
+                translateY: [60, 0],
+                scale: [0.8, 1],
+                duration: 1000,
+                delay: anime.stagger(150, { start: 300 }),
+                easing: "easeOutExpo",
+              });
+            }
+
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    observer.observe(sectionRef.current);
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, []);
+
+  // Add hover animations
+  useEffect(() => {
+    const cards = cardsRef.current?.querySelectorAll(".project-card");
+    if (!cards) return;
+
+    cards.forEach((card) => {
+      const handleMouseEnter = () => {
+        anime({
+          targets: card,
+          scale: 1.05,
+          duration: 300,
+          easing: "easeOutQuad",
+        });
+      };
+
+      const handleMouseLeave = () => {
+        anime({
+          targets: card,
+          scale: 1,
+          duration: 300,
+          easing: "easeOutQuad",
+        });
+      };
+
+      card.addEventListener("mouseenter", handleMouseEnter);
+      card.addEventListener("mouseleave", handleMouseLeave);
+
+      return () => {
+        card.removeEventListener("mouseenter", handleMouseEnter);
+        card.removeEventListener("mouseleave", handleMouseLeave);
+      };
+    });
+  }, []);
+
   return (
-    <section id="projects" className="relative mx-auto max-w-6xl px-6 py-24 md:py-32">
-      <h2 className="text-center text-3xl font-semibold text-white md:text-4xl">
+    <section ref={sectionRef} id="projects" className="relative mx-auto max-w-6xl px-6 py-24 md:py-32">
+      <h2
+        ref={titleRef}
+        className="text-center text-3xl font-semibold text-white md:text-4xl"
+        style={{ opacity: 0 }}
+      >
         Projects
       </h2>
-      <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div ref={cardsRef} className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {projects.map((p, idx) => (
-          <motion.article
+          <article
             key={p.title}
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.4, delay: idx * 0.05 }}
-            className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-5 text-zinc-300 backdrop-blur transition hover:border-cyan-400/30 hover:bg-white/10"
+            className="project-card group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-5 text-zinc-300 backdrop-blur transition hover:border-cyan-400/30 hover:bg-white/10"
+            style={{ opacity: 0 }}
           >
             <div className="absolute -inset-1 -z-10 rounded-3xl opacity-0 blur-2xl transition group-hover:opacity-100" style={{
               background:
@@ -77,7 +168,7 @@ export function Projects() {
                 <ExternalLink size={16} /> Demo
               </a>
             </div>
-          </motion.article>
+          </article>
         ))}
       </div>
     </section>

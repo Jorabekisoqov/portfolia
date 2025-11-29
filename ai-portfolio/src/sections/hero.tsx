@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import anime from "animejs";
 import { ArrowRight } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
@@ -26,6 +26,51 @@ export function Hero() {
   );
 
   const containerRef = useRef<HTMLDivElement>(null);
+  const buttonsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!buttonsRef.current) return;
+
+    const buttons = buttonsRef.current.querySelectorAll("a");
+
+    buttons.forEach((button) => {
+      const handleMouseEnter = () => {
+        anime({
+          targets: button,
+          scale: 1.05,
+          duration: 200,
+          easing: "easeOutQuad",
+        });
+      };
+
+      const handleMouseLeave = () => {
+        anime({
+          targets: button,
+          scale: 1,
+          duration: 200,
+          easing: "easeOutQuad",
+        });
+      };
+
+      const handleClick = () => {
+        anime({
+          targets: button,
+          scale: [1, 0.95, 1],
+          duration: 300,
+        });
+      };
+
+      button.addEventListener("mouseenter", handleMouseEnter);
+      button.addEventListener("mouseleave", handleMouseLeave);
+      button.addEventListener("click", handleClick);
+
+      return () => {
+        button.removeEventListener("mouseenter", handleMouseEnter);
+        button.removeEventListener("mouseleave", handleMouseLeave);
+        button.removeEventListener("click", handleClick);
+      };
+    });
+  }, []);
 
   return (
     <section
@@ -43,37 +88,17 @@ export function Hero() {
       </div>
 
       <div className="relative z-10 mx-auto max-w-5xl px-6 text-center md:px-8">
-        <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-          className="text-balance text-4xl font-semibold tracking-tight text-white drop-shadow md:text-6xl"
-        >
+        <h1 className="text-balance text-4xl font-semibold tracking-tight text-white drop-shadow md:text-6xl">
           {title}
-        </motion.h1>
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: "easeOut", delay: 0.1 }}
-          className="mt-3 text-lg text-cyan-300 md:text-2xl"
-        >
+        </h1>
+        <p className="mt-3 text-lg text-cyan-300 md:text-2xl">
           {subtitle}
-        </motion.p>
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: "easeOut", delay: 0.2 }}
-          className="mx-auto mt-5 max-w-2xl text-pretty text-base text-zinc-300 md:text-lg"
-        >
+        </p>
+        <p className="mx-auto mt-5 max-w-2xl text-pretty text-base text-zinc-300 md:text-lg">
           Building intelligent systems that think, learn, and create.
-        </motion.p>
+        </p>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: "easeOut", delay: 0.3 }}
-          className="mt-8 flex items-center justify-center gap-4"
-        >
+        <div ref={buttonsRef} className="mt-8 flex items-center justify-center gap-4">
           <a
             href="#projects"
             className="group inline-flex items-center gap-2 rounded-full bg-cyan-500/20 px-5 py-3 text-sm font-medium text-cyan-200 ring-1 ring-cyan-400/30 backdrop-blur transition hover:bg-cyan-400/25 hover:text-white hover:ring-cyan-300/50"
@@ -85,9 +110,9 @@ export function Hero() {
             href="#contact"
             className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-medium text-white/80 backdrop-blur transition hover:bg-white/10 hover:text-white"
           >
-            Let’s Build the Future
+            Let's Build the Future
           </a>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
