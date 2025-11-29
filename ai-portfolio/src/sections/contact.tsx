@@ -22,37 +22,49 @@ export function Contact() {
 
             // Animate title
             if (titleRef.current) {
-              animate(titleRef.current, {
-                opacity: [0, 1],
-                translateY: [-30, 0],
-                duration: 800,
-                ease: "outExpo",
-              });
+              if (titleRef.current) {
+                titleRef.current.style.opacity = "0";
+                titleRef.current.style.transform = "translateY(-30px)";
+                animate(titleRef.current, {
+                  opacity: 1,
+                  translateY: 0,
+                  duration: 800,
+                  ease: "outExpo",
+                });
+              }
             }
 
             // Animate form
             if (formRef.current) {
               const inputs = formRef.current.querySelectorAll("input, textarea, button");
-              animate({
-                targets: inputs,
-                opacity: [0, 1],
-                translateY: [30, 0],
-                duration: 800,
-                delay: (el: Element, i: number) => 300 + i * 100,
-                easing: "easeOutExpo",
+              Array.from(inputs).forEach((input, i) => {
+                const el = input as HTMLElement;
+                el.style.opacity = "0";
+                el.style.transform = "translateY(30px)";
+                animate(input, {
+                  opacity: 1,
+                  translateY: 0,
+                  duration: 800,
+                  delay: 300 + i * 100,
+                  ease: "outExpo",
+                });
               });
             }
 
             // Animate social links
             if (socialLinksRef.current) {
               const links = socialLinksRef.current.querySelectorAll("a");
-              animate({
-                targets: links,
-                opacity: [0, 1],
-                scale: [0.8, 1],
-                duration: 600,
-                delay: (el: Element, i: number) => 800 + i * 100,
-                easing: "easeOutBack",
+              Array.from(links).forEach((link, i) => {
+                const el = link as HTMLElement;
+                el.style.opacity = "0";
+                el.style.transform = "scale(0.8)";
+                animate(link, {
+                  opacity: 1,
+                  scale: 1,
+                  duration: 600,
+                  delay: 800 + i * 100,
+                  ease: "outBack",
+                });
               });
             }
 
@@ -125,9 +137,15 @@ export function Contact() {
           const button = e.currentTarget.querySelector("button[type='submit']");
           if (button) {
               animate(button, {
-              scale: [1, 0.95, 1],
-              duration: 200,
+              scale: 0.95,
+              duration: 100,
             });
+              setTimeout(() => {
+                animate(button, {
+                  scale: 1,
+                  duration: 100,
+                });
+              }, 100);
           }
 
           fetch("/api/contact", {
@@ -213,8 +231,7 @@ export function Contact() {
             });
           }}
           onMouseLeave={(e) => {
-              animate({
-              targets: e.currentTarget,
+              animate(e.currentTarget, {
               scale: 1,
               rotate: 0,
               duration: 200,
@@ -230,16 +247,14 @@ export function Contact() {
           rel="noreferrer noopener"
           style={{ opacity: 0 }}
           onMouseEnter={(e) => {
-              animate({
-              targets: e.currentTarget,
+              animate(e.currentTarget, {
               scale: 1.1,
               rotate: -5,
               duration: 200,
             });
           }}
           onMouseLeave={(e) => {
-              animate({
-              targets: e.currentTarget,
+              animate(e.currentTarget, {
               scale: 1,
               rotate: 0,
               duration: 200,
@@ -262,8 +277,7 @@ export function Contact() {
             });
           }}
           onMouseLeave={(e) => {
-              animate({
-              targets: e.currentTarget,
+              animate(e.currentTarget, {
               scale: 1,
               rotate: 0,
               duration: 200,

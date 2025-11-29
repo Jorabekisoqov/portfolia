@@ -45,24 +45,33 @@ export function Projects() {
 
             // Animate title
             if (titleRef.current) {
-              animate(titleRef.current, {
-                opacity: [0, 1],
-                translateY: [-30, 0],
-                duration: 800,
-                ease: "outExpo",
-              });
+              if (titleRef.current) {
+                titleRef.current.style.opacity = "0";
+                titleRef.current.style.transform = "translateY(-30px)";
+                animate(titleRef.current, {
+                  opacity: 1,
+                  translateY: 0,
+                  duration: 800,
+                  ease: "outExpo",
+                });
+              }
             }
 
             // Stagger animation for cards
             if (cardsRef.current) {
               const cards = cardsRef.current.querySelectorAll(".project-card");
-              animate(cards, {
-                opacity: [0, 1],
-                translateY: [60, 0],
-                scale: [0.8, 1],
-                duration: 1000,
-                delay: (el: Element, i: number) => 300 + i * 150,
-                ease: "outExpo",
+              Array.from(cards).forEach((card, i) => {
+                const el = card as HTMLElement;
+                el.style.opacity = "0";
+                el.style.transform = "translateY(60px) scale(0.8)";
+                animate(card, {
+                  opacity: 1,
+                  translateY: 0,
+                  scale: 1,
+                  duration: 1000,
+                  delay: 300 + i * 150,
+                  ease: "outExpo",
+                });
               });
             }
 

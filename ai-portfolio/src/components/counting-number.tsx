@@ -38,7 +38,7 @@ export function CountingNumber({
               value: end,
               duration,
               ease: "outExpo",
-              update: function (anim) {
+              update: function (_anim: unknown) {
                 const val = animTarget.value;
                 setDisplayValue(parseFloat(val.toFixed(decimals)));
               },

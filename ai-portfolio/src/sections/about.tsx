@@ -21,9 +21,11 @@ export function About() {
 
             // Animate title
             if (titleRef.current) {
+              titleRef.current.style.opacity = "0";
+              titleRef.current.style.transform = "translateX(-50px)";
               animate(titleRef.current, {
-                opacity: [0, 1],
-                translateX: [-50, 0],
+                opacity: 1,
+                translateX: 0,
                 duration: 800,
                 ease: "outExpo",
               });
@@ -32,21 +34,27 @@ export function About() {
             // Animate text paragraphs with stagger
             if (textRef.current) {
               const paragraphs = textRef.current.querySelectorAll("p");
-              animate(paragraphs, {
-                opacity: [0, 1],
-                translateX: [-30, 0],
-                duration: 800,
-                delay: (el: Element, i: number) => 300 + i * 150,
-                ease: "outExpo",
+              Array.from(paragraphs).forEach((p, i) => {
+                (p as HTMLElement).style.opacity = "0";
+                (p as HTMLElement).style.transform = "translateX(-30px)";
+                animate(p, {
+                  opacity: 1,
+                  translateX: 0,
+                  duration: 800,
+                  delay: 300 + i * 150,
+                  ease: "outExpo",
+                });
               });
             }
 
             // Animate image with scale and rotation
             if (imageRef.current) {
+              imageRef.current.style.opacity = "0";
+              imageRef.current.style.transform = "scale(0.8) rotate(5deg)";
               animate(imageRef.current, {
-                opacity: [0, 1],
-                scale: [0.8, 1],
-                rotate: [5, 0],
+                opacity: 1,
+                scale: 1,
+                rotate: 0,
                 duration: 1000,
                 delay: 200,
                 ease: "outExpo",
@@ -54,7 +62,7 @@ export function About() {
 
               // Add floating animation
               animate(imageRef.current, {
-                translateY: [0, -10],
+                translateY: -10,
                 duration: 2000,
                 ease: "inOutSine",
                 loop: true,

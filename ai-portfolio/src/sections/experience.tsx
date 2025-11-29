@@ -41,13 +41,16 @@ export function Experience() {
 
             // Animate title
             if (titleRef.current) {
-              animate({
-                targets: titleRef.current,
-                opacity: [0, 1],
-                translateY: [-30, 0],
-                duration: 800,
-                easing: "easeOutExpo",
-              });
+              if (titleRef.current) {
+                titleRef.current.style.opacity = "0";
+                titleRef.current.style.transform = "translateY(-30px)";
+                animate(titleRef.current, {
+                  opacity: 1,
+                  translateY: 0,
+                  duration: 800,
+                  ease: "outExpo",
+                });
+              }
             }
 
             // Stagger animation for timeline items
@@ -56,23 +59,33 @@ export function Experience() {
               const dots = timelineRef.current.querySelectorAll(".timeline-dot");
 
               // Animate dots first
-              animate({
-                targets: dots,
-                scale: [0, 1],
-                opacity: [0, 1],
-                duration: 600,
-                delay: (el: Element, i: number) => 400 + i * 200,
-                easing: "easeOutBack",
+              Array.from(dots).forEach((dot, i) => {
+                const el = dot as HTMLElement;
+                el.style.opacity = "0";
+                el.style.transform = "scale(0)";
+                animate(dot, {
+                  scale: 1,
+                  opacity: 1,
+                  duration: 600,
+                  delay: 400 + i * 200,
+                  ease: "outBack",
+                });
               });
 
               // Then animate items with alternating directions
-              animate({
-                targets: timelineItems,
-                opacity: [0, 1],
-                translateX: (el, i) => (i % 2 === 0 ? [-100, 0] : [100, 0]),
-                duration: 800,
-                delay: (el: Element, i: number) => 600 + i * 200,
-                easing: "easeOutExpo",
+              Array.from(timelineItems).forEach((item, i) => {
+                const startX = i % 2 === 0 ? -100 : 100;
+                // Set initial position
+                (item as HTMLElement).style.transform = `translateX(${startX}px)`;
+                (item as HTMLElement).style.opacity = "0";
+                // Animate to final position
+                animate(item, {
+                  opacity: 1,
+                  translateX: 0,
+                  duration: 800,
+                  delay: 600 + i * 200,
+                  ease: "outExpo",
+                });
               });
             }
 
@@ -99,22 +112,21 @@ export function Experience() {
 
     items.forEach((item) => {
       const handleMouseEnter = () => {
-        anime({
-          targets: item,
+        const itemIndex = Array.from(items).indexOf(item);
+        animate(item, {
           scale: 1.05,
-          translateX: (el, i) => (i % 2 === 0 ? -10 : 10),
+          translateX: itemIndex % 2 === 0 ? -10 : 10,
           duration: 300,
-          easing: "easeOutQuad",
+          ease: "outQuad",
         });
       };
 
       const handleMouseLeave = () => {
-        anime({
-          targets: item,
+        animate(item, {
           scale: 1,
           translateX: 0,
           duration: 300,
-          easing: "easeOutQuad",
+          ease: "outQuad",
         });
       };
 

@@ -32,13 +32,18 @@ export function TextReveal({
 
             const chars = containerRef.current?.querySelectorAll(".char");
             if (chars) {
-              animate(chars, {
-                opacity: [0, 1],
-                translateY: [50, 0],
-                rotateX: [-90, 0],
-                duration,
-                delay: (el: Element, i: number) => delay + i * stagger,
-                ease: "outExpo",
+              Array.from(chars).forEach((char, i) => {
+                const el = char as HTMLElement;
+                el.style.opacity = "0";
+                el.style.transform = "translateY(50px) rotateX(-90deg)";
+                animate(char, {
+                  opacity: 1,
+                  translateY: 0,
+                  rotateX: 0,
+                  duration,
+                  delay: delay + i * stagger,
+                  ease: "outExpo",
+                });
               });
             }
 

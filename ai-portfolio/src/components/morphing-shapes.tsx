@@ -28,7 +28,7 @@ export function MorphingShapes() {
 
       // Opacity pulse
       animate(shape, {
-        opacity: [0.1, 0.3],
+        opacity: 0.3,
         duration: () => utils.random(2000, 4000),
         ease: "inOutSine",
         loop: true,

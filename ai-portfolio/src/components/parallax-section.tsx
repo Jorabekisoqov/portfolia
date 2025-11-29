@@ -33,11 +33,13 @@ export function ParallaxSection({
         scrolled < elementTop + elementHeight
       ) {
         const yPos = -(scrolled - elementTop) * speed;
-        animate(sectionRef.current, {
-          translateY: yPos,
-          duration: 0,
-          ease: "linear",
-        });
+        if (sectionRef.current) {
+          animate(sectionRef.current, {
+            translateY: yPos,
+            duration: 0,
+            ease: "linear",
+          });
+        }
       }
     };
 

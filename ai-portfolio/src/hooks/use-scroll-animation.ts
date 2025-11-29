@@ -34,15 +34,22 @@ export function useScrollAnimation(options: UseScrollAnimationOptions = {}) {
           if (entry.isIntersecting && !animatedRef.current) {
             animatedRef.current = true;
 
-            if (!elementRef.current) return;
+            const element = elementRef.current;
+            if (!element) return;
+            const el = element as HTMLElement;
+            if (opacity) el.style.opacity = "0";
+            el.style.transform = `translateY(${translateY}px)`;
             const easeName = easing.replace("ease", "").toLowerCase() || "outExpo";
-            animate(elementRef.current, {
-              translateY: [translateY, 0],
-              opacity: opacity ? [0, 1] : undefined,
+            const animParams: any = {
+              translateY: 0,
               duration,
               delay,
               ease: easeName,
-            });
+            };
+            if (opacity) {
+              animParams.opacity = 1;
+            }
+            animate(element, animParams);
 
             observer.unobserve(entry.target);
           }

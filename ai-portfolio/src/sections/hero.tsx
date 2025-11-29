@@ -35,29 +35,32 @@ export function Hero() {
 
     buttons.forEach((button) => {
       const handleMouseEnter = () => {
-        animate({
-          targets: button,
+        animate(button, {
           scale: 1.05,
           duration: 200,
-          easing: "easeOutQuad",
+          ease: "outQuad",
         });
       };
 
       const handleMouseLeave = () => {
-        animate({
-          targets: button,
+        animate(button, {
           scale: 1,
           duration: 200,
-          easing: "easeOutQuad",
+          ease: "outQuad",
         });
       };
 
       const handleClick = () => {
-        animate({
-          targets: button,
-          scale: [1, 0.95, 1],
-          duration: 300,
+        animate(button, {
+          scale: 0.95,
+          duration: 150,
         });
+        setTimeout(() => {
+          animate(button, {
+            scale: 1,
+            duration: 150,
+          });
+        }, 150);
       };
 
       button.addEventListener("mouseenter", handleMouseEnter);
