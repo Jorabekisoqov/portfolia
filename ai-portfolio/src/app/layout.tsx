@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { CursorGlow } from "@/components/cursor-glow";
+import { AnimatableCursor } from "@/components/animatable-cursor";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -57,6 +58,7 @@ export default function RootLayout({
       >
         <ThemeProvider>
           <CursorGlow />
+          <AnimatableCursor />
           <div className="relative z-10">
             <header className="fixed right-4 top-4 z-50">
               <ThemeToggle />
