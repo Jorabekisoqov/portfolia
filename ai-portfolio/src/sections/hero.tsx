@@ -1,6 +1,6 @@
 "use client";
 
-import anime from "animejs";
+import { animate } from "animejs";
 import { ArrowRight } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
@@ -35,7 +35,7 @@ export function Hero() {
 
     buttons.forEach((button) => {
       const handleMouseEnter = () => {
-        anime({
+        animate({
           targets: button,
           scale: 1.05,
           duration: 200,
@@ -44,7 +44,7 @@ export function Hero() {
       };
 
       const handleMouseLeave = () => {
-        anime({
+        animate({
           targets: button,
           scale: 1,
           duration: 200,
@@ -53,7 +53,7 @@ export function Hero() {
       };
 
       const handleClick = () => {
-        anime({
+        animate({
           targets: button,
           scale: [1, 0.95, 1],
           duration: 300,

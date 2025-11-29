@@ -1,6 +1,6 @@
 "use client";
 
-import anime from "animejs";
+import { animate } from "animejs";
 import { useEffect, useRef } from "react";
 
 interface ParallaxSectionProps {
@@ -33,11 +33,10 @@ export function ParallaxSection({
         scrolled < elementTop + elementHeight
       ) {
         const yPos = -(scrolled - elementTop) * speed;
-        anime({
-          targets: sectionRef.current,
+        animate(sectionRef.current, {
           translateY: yPos,
           duration: 0,
-          easing: "linear",
+          ease: "linear",
         });
       }
     };

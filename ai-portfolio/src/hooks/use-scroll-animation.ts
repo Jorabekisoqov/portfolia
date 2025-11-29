@@ -1,6 +1,6 @@
 "use client";
 
-import anime from "animejs";
+import { animate } from "animejs";
 import { useEffect, useRef } from "react";
 
 interface UseScrollAnimationOptions {
@@ -34,13 +34,14 @@ export function useScrollAnimation(options: UseScrollAnimationOptions = {}) {
           if (entry.isIntersecting && !animatedRef.current) {
             animatedRef.current = true;
 
-            anime({
-              targets: elementRef.current,
+            if (!elementRef.current) return;
+            const easeName = easing.replace("ease", "").toLowerCase() || "outExpo";
+            animate(elementRef.current, {
               translateY: [translateY, 0],
               opacity: opacity ? [0, 1] : undefined,
               duration,
               delay,
-              easing,
+              ease: easeName,
             });
 
             observer.unobserve(entry.target);

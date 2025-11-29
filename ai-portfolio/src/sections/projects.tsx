@@ -1,6 +1,6 @@
 "use client";
 
-import anime from "animejs";
+import { animate } from "animejs";
 import { Github, ExternalLink } from "lucide-react";
 import { useEffect, useRef } from "react";
 
@@ -45,26 +45,24 @@ export function Projects() {
 
             // Animate title
             if (titleRef.current) {
-              anime({
-                targets: titleRef.current,
+              animate(titleRef.current, {
                 opacity: [0, 1],
                 translateY: [-30, 0],
                 duration: 800,
-                easing: "easeOutExpo",
+                ease: "outExpo",
               });
             }
 
             // Stagger animation for cards
             if (cardsRef.current) {
               const cards = cardsRef.current.querySelectorAll(".project-card");
-              anime({
-                targets: cards,
+              animate(cards, {
                 opacity: [0, 1],
                 translateY: [60, 0],
                 scale: [0.8, 1],
                 duration: 1000,
-                delay: anime.stagger(150, { start: 300 }),
-                easing: "easeOutExpo",
+                delay: (el: Element, i: number) => 300 + i * 150,
+                ease: "outExpo",
               });
             }
 
@@ -91,20 +89,18 @@ export function Projects() {
 
     cards.forEach((card) => {
       const handleMouseEnter = () => {
-        anime({
-          targets: card,
+        animate(card, {
           scale: 1.05,
           duration: 300,
-          easing: "easeOutQuad",
+          ease: "outQuad",
         });
       };
 
       const handleMouseLeave = () => {
-        anime({
-          targets: card,
+        animate(card, {
           scale: 1,
           duration: 300,
-          easing: "easeOutQuad",
+          ease: "outQuad",
         });
       };
 

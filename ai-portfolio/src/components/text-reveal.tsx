@@ -1,6 +1,6 @@
 "use client";
 
-import anime from "animejs";
+import { animate } from "animejs";
 import { useEffect, useRef } from "react";
 
 interface TextRevealProps {
@@ -32,14 +32,13 @@ export function TextReveal({
 
             const chars = containerRef.current?.querySelectorAll(".char");
             if (chars) {
-              anime({
-                targets: chars,
+              animate(chars, {
                 opacity: [0, 1],
                 translateY: [50, 0],
                 rotateX: [-90, 0],
                 duration,
-                delay: anime.stagger(stagger, { start: delay }),
-                easing: "easeOutExpo",
+                delay: (el: Element, i: number) => delay + i * stagger,
+                ease: "outExpo",
               });
             }
 

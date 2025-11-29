@@ -1,6 +1,6 @@
 "use client";
 
-import anime from "animejs";
+import { animate } from "animejs";
 import { useEffect, useRef } from "react";
 
 const items = [
@@ -41,7 +41,7 @@ export function Experience() {
 
             // Animate title
             if (titleRef.current) {
-              anime({
+              animate({
                 targets: titleRef.current,
                 opacity: [0, 1],
                 translateY: [-30, 0],
@@ -56,22 +56,22 @@ export function Experience() {
               const dots = timelineRef.current.querySelectorAll(".timeline-dot");
 
               // Animate dots first
-              anime({
+              animate({
                 targets: dots,
                 scale: [0, 1],
                 opacity: [0, 1],
                 duration: 600,
-                delay: anime.stagger(200, { start: 400 }),
+                delay: (el: Element, i: number) => 400 + i * 200,
                 easing: "easeOutBack",
               });
 
               // Then animate items with alternating directions
-              anime({
+              animate({
                 targets: timelineItems,
                 opacity: [0, 1],
                 translateX: (el, i) => (i % 2 === 0 ? [-100, 0] : [100, 0]),
                 duration: 800,
-                delay: anime.stagger(200, { start: 600 }),
+                delay: (el: Element, i: number) => 600 + i * 200,
                 easing: "easeOutExpo",
               });
             }

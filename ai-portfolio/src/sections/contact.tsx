@@ -1,6 +1,6 @@
 "use client";
 
-import anime from "animejs";
+import { animate } from "animejs";
 import { Github, Linkedin, Send } from "lucide-react";
 import { useEffect, useRef } from "react";
 
@@ -22,24 +22,23 @@ export function Contact() {
 
             // Animate title
             if (titleRef.current) {
-              anime({
-                targets: titleRef.current,
+              animate(titleRef.current, {
                 opacity: [0, 1],
                 translateY: [-30, 0],
                 duration: 800,
-                easing: "easeOutExpo",
+                ease: "outExpo",
               });
             }
 
             // Animate form
             if (formRef.current) {
               const inputs = formRef.current.querySelectorAll("input, textarea, button");
-              anime({
+              animate({
                 targets: inputs,
                 opacity: [0, 1],
                 translateY: [30, 0],
                 duration: 800,
-                delay: anime.stagger(100, { start: 300 }),
+                delay: (el: Element, i: number) => 300 + i * 100,
                 easing: "easeOutExpo",
               });
             }
@@ -47,12 +46,12 @@ export function Contact() {
             // Animate social links
             if (socialLinksRef.current) {
               const links = socialLinksRef.current.querySelectorAll("a");
-              anime({
+              animate({
                 targets: links,
                 opacity: [0, 1],
                 scale: [0.8, 1],
                 duration: 600,
-                delay: anime.stagger(100, { start: 800 }),
+                delay: (el: Element, i: number) => 800 + i * 100,
                 easing: "easeOutBack",
               });
             }
@@ -80,20 +79,18 @@ export function Contact() {
 
     inputs.forEach((input) => {
       const handleFocus = () => {
-        anime({
-          targets: input,
+              animate(input, {
           scale: 1.02,
           duration: 200,
-          easing: "easeOutQuad",
+          ease: "outQuad",
         });
       };
 
       const handleBlur = () => {
-        anime({
-          targets: input,
+              animate(input, {
           scale: 1,
           duration: 200,
-          easing: "easeOutQuad",
+          ease: "outQuad",
         });
       };
 
@@ -127,8 +124,7 @@ export function Contact() {
           // Animate button on submit
           const button = e.currentTarget.querySelector("button[type='submit']");
           if (button) {
-            anime({
-              targets: button,
+              animate(button, {
               scale: [1, 0.95, 1],
               duration: 200,
             });
@@ -142,14 +138,12 @@ export function Contact() {
             .then(() => {
               // Success animation
               if (button) {
-                anime({
-                  targets: button,
+                animate(button, {
                   backgroundColor: "#10b981",
                   duration: 300,
                 });
                 setTimeout(() => {
-                  anime({
-                    targets: button,
+                  animate(button, {
                     backgroundColor: "rgba(34, 211, 238, 0.2)",
                     duration: 300,
                   });
@@ -212,15 +206,14 @@ export function Contact() {
           rel="noreferrer noopener"
           style={{ opacity: 0 }}
           onMouseEnter={(e) => {
-            anime({
-              targets: e.currentTarget,
+              animate(e.currentTarget, {
               scale: 1.1,
               rotate: 5,
               duration: 200,
             });
           }}
           onMouseLeave={(e) => {
-            anime({
+              animate({
               targets: e.currentTarget,
               scale: 1,
               rotate: 0,
@@ -237,7 +230,7 @@ export function Contact() {
           rel="noreferrer noopener"
           style={{ opacity: 0 }}
           onMouseEnter={(e) => {
-            anime({
+              animate({
               targets: e.currentTarget,
               scale: 1.1,
               rotate: -5,
@@ -245,7 +238,7 @@ export function Contact() {
             });
           }}
           onMouseLeave={(e) => {
-            anime({
+              animate({
               targets: e.currentTarget,
               scale: 1,
               rotate: 0,
@@ -262,15 +255,14 @@ export function Contact() {
           rel="noreferrer noopener"
           style={{ opacity: 0 }}
           onMouseEnter={(e) => {
-            anime({
-              targets: e.currentTarget,
+              animate(e.currentTarget, {
               scale: 1.1,
               rotate: 5,
               duration: 200,
             });
           }}
           onMouseLeave={(e) => {
-            anime({
+              animate({
               targets: e.currentTarget,
               scale: 1,
               rotate: 0,

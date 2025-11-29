@@ -1,6 +1,6 @@
 "use client";
 
-import anime from "animejs";
+import { animate, utils } from "animejs";
 import { useEffect, useRef } from "react";
 
 export function MorphingShapes() {
@@ -14,33 +14,31 @@ export function MorphingShapes() {
     // Animate positions and rotations
     shapes.forEach((shape, i) => {
       // Continuous floating animation
-      anime({
-        targets: shape,
-        translateX: () => anime.random(-30, 30),
-        translateY: () => anime.random(-30, 30),
-        rotate: () => anime.random(-180, 180),
-        scale: () => anime.random(0.8, 1.2),
-        duration: () => anime.random(3000, 6000),
-        easing: "easeInOutSine",
+      animate(shape, {
+        translateX: () => utils.random(-30, 30),
+        translateY: () => utils.random(-30, 30),
+        rotate: () => utils.random(-180, 180),
+        scale: () => utils.random(0.8, 1.2),
+        duration: () => utils.random(3000, 6000),
+        ease: "inOutSine",
         loop: true,
-        direction: "alternate",
+        alternate: true,
         delay: i * 500,
       });
 
       // Opacity pulse
-      anime({
-        targets: shape,
+      animate(shape, {
         opacity: [0.1, 0.3],
-        duration: () => anime.random(2000, 4000),
-        easing: "easeInOutSine",
+        duration: () => utils.random(2000, 4000),
+        ease: "inOutSine",
         loop: true,
-        direction: "alternate",
+        alternate: true,
         delay: i * 300,
       });
     });
 
     return () => {
-      anime.remove(shapes);
+      // Cleanup handled by React
     };
   }, []);
 

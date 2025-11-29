@@ -1,6 +1,6 @@
 "use client";
 
-import anime from "animejs";
+import { animate } from "animejs";
 import { useEffect, useRef, useState } from "react";
 
 interface CountingNumberProps {
@@ -33,13 +33,13 @@ export function CountingNumber({
           if (entry.isIntersecting && !animatedRef.current) {
             animatedRef.current = true;
 
-            anime({
-              targets: { value: 0 },
+            const animTarget = { value: 0 };
+            animate(animTarget, {
               value: end,
               duration,
-              easing: "easeOutExpo",
+              ease: "outExpo",
               update: function (anim) {
-                const val = anim.animatables[0].target.value;
+                const val = animTarget.value;
                 setDisplayValue(parseFloat(val.toFixed(decimals)));
               },
             });

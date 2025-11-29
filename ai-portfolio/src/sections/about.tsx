@@ -1,6 +1,6 @@
 "use client";
 
-import anime from "animejs";
+import { animate } from "animejs";
 import { useEffect, useRef } from "react";
 
 export function About() {
@@ -21,48 +21,44 @@ export function About() {
 
             // Animate title
             if (titleRef.current) {
-              anime({
-                targets: titleRef.current,
+              animate(titleRef.current, {
                 opacity: [0, 1],
                 translateX: [-50, 0],
                 duration: 800,
-                easing: "easeOutExpo",
+                ease: "outExpo",
               });
             }
 
             // Animate text paragraphs with stagger
             if (textRef.current) {
               const paragraphs = textRef.current.querySelectorAll("p");
-              anime({
-                targets: paragraphs,
+              animate(paragraphs, {
                 opacity: [0, 1],
                 translateX: [-30, 0],
                 duration: 800,
-                delay: anime.stagger(150, { start: 300 }),
-                easing: "easeOutExpo",
+                delay: (el: Element, i: number) => 300 + i * 150,
+                ease: "outExpo",
               });
             }
 
             // Animate image with scale and rotation
             if (imageRef.current) {
-              anime({
-                targets: imageRef.current,
+              animate(imageRef.current, {
                 opacity: [0, 1],
                 scale: [0.8, 1],
                 rotate: [5, 0],
                 duration: 1000,
                 delay: 200,
-                easing: "easeOutExpo",
+                ease: "outExpo",
               });
 
               // Add floating animation
-              anime({
-                targets: imageRef.current,
+              animate(imageRef.current, {
                 translateY: [0, -10],
                 duration: 2000,
-                easing: "easeInOutSine",
+                ease: "inOutSine",
                 loop: true,
-                direction: "alternate",
+                alternate: true,
               });
             }
 
