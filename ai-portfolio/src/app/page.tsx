@@ -6,18 +6,43 @@ import { Contact } from "@/sections/contact";
 import { Footer } from "@/sections/footer";
 import { StatsSection } from "@/components/stats-section";
 import { MorphingShapes } from "@/components/morphing-shapes";
+import { getGitHubPortfolioData, type PortfolioProject } from "@/lib/github";
 
-export default function Home() {
+export default async function Home() {
+  let github: {
+    profileUrl: string;
+    projectCount: number;
+    contributionsTotal: number | null;
+    yearsOnGitHub: number;
+    projects: PortfolioProject[];
+  } = {
+    profileUrl: "https://github.com/isoqovjorabek2",
+    projectCount: 0,
+    contributionsTotal: null,
+    yearsOnGitHub: 1,
+    projects: [],
+  };
+
+  try {
+    github = await getGitHubPortfolioData();
+  } catch (err) {
+    console.error("GitHub portfolio fetch failed:", err);
+  }
+
   return (
     <main className="relative">
       <MorphingShapes />
       <Hero />
-      <StatsSection />
+      <StatsSection
+        projectCount={github.projectCount}
+        contributionsTotal={github.contributionsTotal}
+        yearsExperience={github.yearsOnGitHub}
+      />
       <About />
-      <Projects />
+      <Projects projects={github.projects} />
       <Experience />
       <Contact />
-      <Footer />
+      <Footer githubUrl={github.profileUrl} />
     </main>
   );
 }

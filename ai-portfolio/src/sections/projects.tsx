@@ -3,32 +3,13 @@
 import { animate } from "animejs";
 import { Github, ExternalLink } from "lucide-react";
 import { useEffect, useRef } from "react";
+import type { PortfolioProject } from "@/lib/github";
 
-const projects = [
-  {
-    title: "NeuroRAG",
-    description: "Retrieval-augmented generation pipeline with hybrid search, reranking, and tool-use.",
-    stack: ["Next.js", "TypeScript", "Python", "LangChain"],
-    github: "https://github.com/isoqovjorabek2",
-    demo: "https://example.com",
-  },
-  {
-    title: "LLM Orchestrator",
-    description: "Agentic workflow engine with memory, function-calling, and streaming UI.",
-    stack: ["Next.js", "Node", "OpenAI", "Postgres"],
-    github: "https://github.com/isoqovjorabek2",
-    demo: "https://example.com",
-  },
-  {
-    title: "ReinforceKit",
-    description: "Reinforcement learning experiments toolkit with visualization and dashboards.",
-    stack: ["Python", "PyTorch", "Weights & Biases"],
-    github: "https://github.com/isoqovjorabek2",
-    demo: "https://example.com",
-  },
-];
+type ProjectsProps = {
+  projects: PortfolioProject[];
+};
 
-export function Projects() {
+export function Projects({ projects }: ProjectsProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
@@ -121,7 +102,7 @@ export function Projects() {
         card.removeEventListener("mouseleave", handleMouseLeave);
       };
     });
-  }, []);
+  }, [projects]);
 
   return (
     <section ref={sectionRef} id="projects" className="relative mx-auto max-w-6xl px-6 py-24 md:py-32">
@@ -132,10 +113,19 @@ export function Projects() {
       >
         Projects
       </h2>
+      {projects.length === 0 ? (
+        <p className="mt-10 text-center text-sm text-zinc-400">
+          No public repositories loaded. Set{" "}
+          <code className="rounded bg-white/10 px-1.5 py-0.5 text-cyan-200">
+            GITHUB_USERNAME
+          </code>{" "}
+          and check the network connection.
+        </p>
+      ) : null}
       <div ref={cardsRef} className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {projects.map((p, idx) => (
+        {projects.map((p) => (
           <article
-            key={p.title}
+            key={p.github}
             className="project-card group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-5 text-zinc-300 backdrop-blur transition hover:border-cyan-400/30 hover:bg-white/10"
             style={{ opacity: 0 }}
           >
@@ -155,7 +145,7 @@ export function Projects() {
                 </span>
               ))}
             </div>
-            <div className="mt-5 flex gap-3">
+            <div className="mt-5 flex flex-wrap gap-3">
               <a
                 href={p.github}
                 target="_blank"
@@ -164,14 +154,16 @@ export function Projects() {
               >
                 <Github size={16} /> GitHub
               </a>
-              <a
-                href={p.demo}
-                target="_blank"
-                rel="noreferrer noopener"
-                className="inline-flex items-center gap-2 rounded-full bg-cyan-500/20 px-3 py-2 text-xs text-cyan-200 ring-1 ring-cyan-400/30 transition hover:bg-cyan-400/25 hover:text-white hover:ring-cyan-300/50"
-              >
-                <ExternalLink size={16} /> Demo
-              </a>
+              {p.demo ? (
+                <a
+                  href={p.demo}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="inline-flex items-center gap-2 rounded-full bg-cyan-500/20 px-3 py-2 text-xs text-cyan-200 ring-1 ring-cyan-400/30 transition hover:bg-cyan-400/25 hover:text-white hover:ring-cyan-300/50"
+                >
+                  <ExternalLink size={16} /> Demo
+                </a>
+              ) : null}
             </div>
           </article>
         ))}
