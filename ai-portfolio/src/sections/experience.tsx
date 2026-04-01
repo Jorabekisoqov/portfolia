@@ -144,14 +144,14 @@ export function Experience() {
     <section ref={sectionRef} id="experience" className="relative mx-auto max-w-5xl px-6 py-24 md:py-32">
       <h2
         ref={titleRef}
-        className="text-center text-3xl font-semibold text-white md:text-4xl"
+        className="text-center text-3xl font-semibold text-zinc-900 md:text-4xl dark:text-white"
         style={{ opacity: 0 }}
       >
         Experience & Education
       </h2>
       <div
         ref={timelineRef}
-        className="mt-12 relative before:absolute before:inset-y-0 before:left-1/2 before:w-px before:-translate-x-1/2 before:bg-gradient-to-b before:from-cyan-400/20 before:via-white/10 before:to-violet-400/20"
+        className="mt-12 relative before:absolute before:inset-y-0 before:left-1/2 before:w-px before:-translate-x-1/2 before:bg-gradient-to-b before:from-cyan-500/30 before:via-zinc-300/80 before:to-violet-500/30 dark:before:from-cyan-400/20 dark:before:via-white/10 dark:before:to-violet-400/20"
       >
         {items.map((item, i) => (
           <div
@@ -162,13 +162,15 @@ export function Experience() {
             style={{ opacity: 0 }}
           >
             <div className={`${i % 2 ? "md:col-start-2" : "md:col-start-1"} w-full md:max-w-md`}>
-              <article className="relative rounded-2xl border border-white/10 bg-white/5 p-5 text-zinc-300 backdrop-blur">
+              <article className="relative rounded-2xl border border-zinc-200/90 bg-white/80 p-5 text-zinc-700 shadow-sm backdrop-blur dark:border-white/10 dark:bg-white/5 dark:text-zinc-300 dark:shadow-none">
                 <div
                   className="timeline-dot absolute -left-3 top-6 hidden h-3 w-3 rounded-full bg-cyan-400 md:block"
                   style={{ opacity: 0 }}
                 />
-                <h3 className="text-lg font-semibold text-white">{item.title}</h3>
-                <p className="text-xs text-zinc-400">{item.time}</p>
+                <h3 className="text-lg font-semibold text-zinc-900 dark:text-white">
+                  {item.title}
+                </h3>
+                <p className="text-xs text-zinc-500 dark:text-zinc-400">{item.time}</p>
                 <p className="mt-2 text-sm">{item.description}</p>
               </article>
             </div>

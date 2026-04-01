@@ -34,14 +34,18 @@ export function CountingNumber({
             animatedRef.current = true;
 
             const animTarget = { value: 0 };
-            animate(animTarget, {
+            const anim = animate(animTarget, {
               value: end,
               duration,
               ease: "outExpo",
-              update: function (_anim: unknown) {
-                const val = animTarget.value;
-                setDisplayValue(parseFloat(val.toFixed(decimals)));
+              onRender: () => {
+                setDisplayValue(
+                  parseFloat(Number(animTarget.value).toFixed(decimals))
+                );
               },
+            });
+            void anim.then(() => {
+              setDisplayValue(parseFloat(Number(end).toFixed(decimals)));
             });
 
             observer.unobserve(entry.target);

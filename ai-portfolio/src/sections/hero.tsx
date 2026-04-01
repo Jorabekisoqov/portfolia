@@ -87,31 +87,31 @@ export function Hero() {
           frameBorder="0"
           className="h-full w-full"
         />
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/80" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/70 via-zinc-100/50 to-zinc-200/80 dark:from-black/60 dark:via-black/40 dark:to-black/80" />
       </div>
 
       <div className="relative z-10 mx-auto max-w-5xl px-6 text-center md:px-8">
-        <h1 className="text-balance text-4xl font-semibold tracking-tight text-white drop-shadow md:text-6xl">
+        <h1 className="text-balance text-4xl font-semibold tracking-tight text-zinc-900 drop-shadow dark:text-white md:text-6xl">
           {title}
         </h1>
-        <p className="mt-3 text-lg text-cyan-300 md:text-2xl">
+        <p className="mt-3 text-lg text-cyan-700 md:text-2xl dark:text-cyan-300">
           {subtitle}
         </p>
-        <p className="mx-auto mt-5 max-w-2xl text-pretty text-base text-zinc-300 md:text-lg">
+        <p className="mx-auto mt-5 max-w-2xl text-pretty text-base text-zinc-600 md:text-lg dark:text-zinc-300">
           Building intelligent systems that think, learn, and create.
         </p>
 
         <div ref={buttonsRef} className="mt-8 flex items-center justify-center gap-4">
           <a
             href="#projects"
-            className="group inline-flex items-center gap-2 rounded-full bg-cyan-500/20 px-5 py-3 text-sm font-medium text-cyan-200 ring-1 ring-cyan-400/30 backdrop-blur transition hover:bg-cyan-400/25 hover:text-white hover:ring-cyan-300/50"
+            className="group inline-flex items-center gap-2 rounded-full bg-cyan-500/15 px-5 py-3 text-sm font-medium text-cyan-800 ring-1 ring-cyan-500/40 backdrop-blur transition hover:bg-cyan-500/25 hover:text-cyan-950 hover:ring-cyan-600/50 dark:bg-cyan-500/20 dark:text-cyan-200 dark:ring-cyan-400/30 dark:hover:bg-cyan-400/25 dark:hover:text-white dark:hover:ring-cyan-300/50"
           >
             Explore My Work
             <ArrowRight className="transition group-hover:translate-x-0.5" size={18} />
           </a>
           <a
             href="#contact"
-            className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-medium text-white/80 backdrop-blur transition hover:bg-white/10 hover:text-white"
+            className="inline-flex items-center gap-2 rounded-full border border-zinc-300/80 bg-white/60 px-5 py-3 text-sm font-medium text-zinc-700 backdrop-blur transition hover:bg-white hover:text-zinc-900 dark:border-white/10 dark:bg-white/5 dark:text-white/80 dark:hover:bg-white/10 dark:hover:text-white"
           >
             Let's Build the Future
           </a>

@@ -23,6 +23,7 @@ type GitHubRepo = {
   fork: boolean;
   archived: boolean;
   updated_at: string;
+  owner: { login: string };
 };
 
 const GITHUB_API = "https://api.github.com";
@@ -62,6 +63,32 @@ function isLikelyProfileReadmeRepo(repo: GitHubRepo, login: string): boolean {
   );
 }
 
+/** Coursework / labs / assignments — excluded from the portfolio grid and LOC sum. */
+function isLikelyAssignmentOrLab(repo: GitHubRepo): boolean {
+  const n = repo.name.toLowerCase();
+  const d = (repo.description ?? "").toLowerCase();
+
+  const nameHints =
+    /^lab\d+/i.test(repo.name) ||
+    /\blab\d+\b/i.test(n) ||
+    /(^|_)lab($|_)/i.test(n) ||
+    /\bcs\d{3}\b/i.test(n) ||
+    /assignment|homework|coursework|midterm|_hw\d|\bhw\d/i.test(n) ||
+    /^mp[_-]?lab/i.test(n) ||
+    /\bweek\d+\b.*assign/i.test(n);
+
+  if (nameHints) return true;
+
+  const descHints =
+    /\bfor the course\b|\bcourse called\b|\bweek \d+ assignment\b|\bhomework \d/i.test(
+      d
+    ) ||
+    /this repository designed to create/i.test(d) ||
+    /\bassignment\b.*\bcourse\b/i.test(d);
+
+  return descHints;
+}
+
 function repoToProject(repo: GitHubRepo): PortfolioProject {
   const description =
     repo.description?.trim() ||
@@ -73,15 +100,11 @@ function repoToProject(repo: GitHubRepo): PortfolioProject {
         ? [repo.language]
         : ["GitHub"];
 
-  let demo: string | null = null;
-  if (repo.homepage) {
-    try {
-      const u = new URL(repo.homepage);
-      if (u.protocol === "http:" || u.protocol === "https:") demo = repo.homepage;
-    } catch {
-      demo = null;
-    }
-  }
+  const isIeltsMock =
+    /^ielts[-_]?mock/i.test(repo.name) ||
+    /ielts.*mock.*platform/i.test(repo.name);
+
+  const demo: string | null = isIeltsMock ? "https://examuz.uz" : null;
 
   return {
     title: humanizeRepoName(repo.name),
@@ -118,6 +141,41 @@ async function fetchAllRepos(username: string): Promise<GitHubRepo[]> {
   }
 
   return out;
+}
+
+async function fetchRepoLanguageBytes(
+  owner: string,
+  repo: string,
+  headers: HeadersInit
+): Promise<number> {
+  const res = await fetch(
+    `${GITHUB_API}/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/languages`,
+    { headers, next: { revalidate: 3600 } }
+  );
+  if (!res.ok) return 0;
+  const langs = (await res.json()) as Record<string, number>;
+  return Object.values(langs).reduce((sum, b) => sum + b, 0);
+}
+
+/** ~bytes per line of source (heuristic for GitHub language byte totals). */
+const BYTES_PER_LINE = 42;
+
+function formatLinesStat(approxLines: number): { displayEnd: number; suffix: string } {
+  const lines = Math.max(0, Math.round(approxLines));
+  if (lines < 1) return { displayEnd: 0, suffix: "" };
+  if (lines >= 1_000_000) {
+    return {
+      displayEnd: Math.max(1, Math.round(lines / 1_000_000)),
+      suffix: "M+",
+    };
+  }
+  if (lines >= 1_000) {
+    return {
+      displayEnd: Math.max(1, Math.round(lines / 1_000)),
+      suffix: "K+",
+    };
+  }
+  return { displayEnd: lines, suffix: "" };
 }
 
 async function fetchContributionsTotal(
@@ -174,6 +232,8 @@ export type GitHubPortfolioData = {
   projectCount: number;
   contributionsTotal: number | null;
   yearsOnGitHub: number;
+  linesDisplayEnd: number;
+  linesDisplaySuffix: string;
   projects: PortfolioProject[];
 };
 
@@ -193,6 +253,8 @@ export async function getGitHubPortfolioData(): Promise<GitHubPortfolioData> {
 
   const user = (await userRes.json()) as GitHubUser;
 
+  const headers = githubHeaders();
+
   const [repos, contributionsTotal] = await Promise.all([
     fetchAllRepos(username),
     fetchContributionsTotal(username, token),
@@ -202,8 +264,19 @@ export async function getGitHubPortfolioData(): Promise<GitHubPortfolioData> {
     (r) =>
       !r.fork &&
       !r.archived &&
-      !isLikelyProfileReadmeRepo(r, user.login)
+      !isLikelyProfileReadmeRepo(r, user.login) &&
+      !isLikelyAssignmentOrLab(r)
   );
+
+  const byteTotals = await Promise.all(
+    filtered.map((r) =>
+      fetchRepoLanguageBytes(r.owner.login, r.name, headers)
+    )
+  );
+  const totalBytes = byteTotals.reduce((a, b) => a + b, 0);
+  const approxLines = totalBytes / BYTES_PER_LINE;
+  const { displayEnd: linesDisplayEnd, suffix: linesDisplaySuffix } =
+    formatLinesStat(approxLines);
 
   const projects = filtered.map(repoToProject);
 
@@ -212,6 +285,8 @@ export async function getGitHubPortfolioData(): Promise<GitHubPortfolioData> {
     projectCount: projects.length,
     contributionsTotal,
     yearsOnGitHub: fullYearsSince(user.created_at),
+    linesDisplayEnd,
+    linesDisplaySuffix,
     projects,
   };
 }

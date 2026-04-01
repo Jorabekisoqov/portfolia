@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* Manual theme via next-themes (.dark on <html>) — v4 defaults to prefers-color-scheme only */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme inline {
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
@@ -11,7 +14,7 @@ body {
 }
 
 body {
-  @apply bg-black text-zinc-200 font-sans;
+  @apply bg-zinc-50 text-zinc-900 font-sans dark:bg-black dark:text-zinc-200;
 }
 
 /* Scrollbar styling for a futuristic vibe */

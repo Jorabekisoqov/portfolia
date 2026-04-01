@@ -12,8 +12,10 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
     <NextThemesProvider
       attribute="class"
       defaultTheme="dark"
+      themes={["light", "dark"]}
       enableSystem={false}
       disableTransitionOnChange
+      storageKey="ai-portfolio-theme"
     >
       {children}
     </NextThemesProvider>

@@ -14,12 +14,16 @@ export default async function Home() {
     projectCount: number;
     contributionsTotal: number | null;
     yearsOnGitHub: number;
+    linesDisplayEnd: number;
+    linesDisplaySuffix: string;
     projects: PortfolioProject[];
   } = {
     profileUrl: "https://github.com/isoqovjorabek2",
     projectCount: 0,
     contributionsTotal: null,
     yearsOnGitHub: 1,
+    linesDisplayEnd: 0,
+    linesDisplaySuffix: "",
     projects: [],
   };
 
@@ -37,6 +41,8 @@ export default async function Home() {
         projectCount={github.projectCount}
         contributionsTotal={github.contributionsTotal}
         yearsExperience={github.yearsOnGitHub}
+        linesDisplayEnd={github.linesDisplayEnd}
+        linesDisplaySuffix={github.linesDisplaySuffix}
       />
       <About />
       <Projects projects={github.projects} />

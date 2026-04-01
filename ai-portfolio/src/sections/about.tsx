@@ -92,18 +92,18 @@ export function About() {
         <div ref={textRef} className="order-2 md:order-1">
           <h2
             ref={titleRef}
-            className="text-3xl font-semibold text-white md:text-4xl"
+            className="text-3xl font-semibold text-zinc-900 md:text-4xl dark:text-white"
             style={{ opacity: 0 }}
           >
             About Me
           </h2>
-          <p className="mt-4 text-zinc-300" style={{ opacity: 0 }}>
+          <p className="mt-4 text-zinc-600 dark:text-zinc-300" style={{ opacity: 0 }}>
             I'm a software developer passionate about building intelligent systems. My work focuses on creating AI models — from large language models (LLMs) and retrieval-augmented generation (RAG) architectures to machine learning frameworks driven by reinforcement learning.
           </p>
-          <p className="mt-4 text-zinc-300" style={{ opacity: 0 }}>
+          <p className="mt-4 text-zinc-600 dark:text-zinc-300" style={{ opacity: 0 }}>
             I have a strong foundation in calculus, physics, probability, statistics, and linear algebra, which allows me to approach AI not just as a coder, but as a scientist.
           </p>
-          <p className="mt-4 text-zinc-300" style={{ opacity: 0 }}>
+          <p className="mt-4 text-zinc-600 dark:text-zinc-300" style={{ opacity: 0 }}>
             Currently, I'm a senior student at New Uzbekistan University, constantly expanding my understanding of how machines learn and reason. My goal is simple: to push the boundaries of intelligence through code, and to keep learning, building, and thriving.
           </p>
         </div>
@@ -113,7 +113,7 @@ export function About() {
           style={{ opacity: 0 }}
         >
           <div className="relative mx-auto aspect-square w-64 overflow-hidden rounded-2xl border border-cyan-400/20 bg-gradient-to-br from-cyan-500/20 via-transparent to-transparent p-1 shadow-[0_0_40px_rgba(0,255,255,0.15)] backdrop-blur md:w-80">
-            <div className="relative h-full w-full overflow-hidden rounded-xl bg-black/60">
+            <div className="relative h-full w-full overflow-hidden rounded-xl bg-zinc-200/80 dark:bg-black/60">
               <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,rgba(34,211,238,0.15),transparent_40%),radial-gradient(ellipse_at_bottom_right,rgba(99,102,241,0.15),transparent_40%)]" />
               <img
                 src="/image.png"
